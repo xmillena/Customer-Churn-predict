@@ -1,0 +1,12 @@
+# Ambiente virtual
+churn-project/
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
