@@ -10,9 +10,9 @@ df_data.info()
 #%%
 #Preparando os dados
 df = df_data.copy()
-df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+#df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
 df = df.dropna(subset=['TotalCharges'])
-df['Ticket_Medio_Historico'] = df.apply(lambda x: x['TotalCharges']/x['tenure'] if x['tenure'] > 0 else x['MonthlyCharges'], axis=1 )
+#df['Ticket_Medio_Historico'] = df.apply(lambda x: x['TotalCharges']/x['tenure'] if x['tenure'] > 0 else x['MonthlyCharges'], axis=1 )
 
 genero = {'Female':1, 'Male':0}
 binario = {'Yes':1, 'No':0}
@@ -47,10 +47,11 @@ list(df_final.columns)
 #%%
 
 #Seleção de features e separação dos dados
-features = df_final.drop(columns=['customerID', 'Churn']).columns.copy()
+features = df_final.drop(columns=['customerID', 'Churn', 'TotalCharges']).columns.copy()
 target = 'Churn'
 X, y = df_final[features], df_final[target]
 
+from sklearn import model_selection
 from sklearn.model_selection import train_test_split
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
@@ -83,14 +84,27 @@ best_features
 # %%
 X_train.isnull().sum()
 #%%
-#Modelo Regressao linear
-#testar outros modelos
-from sklearn import linear_model
-model = linear_model.LogisticRegression(penalty=None, random_state=42, max_iter=1000)
-#conforme eu for adicionando coisa pra fazer, adicionar os steps
-model_pipeline = pipeline.Pipeline(steps = [('Model', model)])
 
+
+"Modelo Regressao linear"
+#testar outros modelos
+from sklearn import linear_model, ensemble
+
+#model = linear_model.LogisticRegression(penalty=None, random_state=42, max_iter=1000)
+model = ensemble.RandomForestClassifier(random_state=42, n_jobs=2)
+params = {
+    "min_samples_leaf":[15,20,25,30,50],
+    "n_estimators": [100,200,300,1000],
+    "criterion": ['gini', 'entropy', 'log_loss']   
+
+}
+grid = model_selection.GridSearchCV(model, params, cv=3, scoring="roc_auc")
+
+#conforme eu for adicionando coisa pra fazer, adicionar mais steps discretization, onehot, etc
+model_pipeline = pipeline.Pipeline(steps = [('Grid', grid)])
+#grid.fit(X_train[best_features], y_train)
 model_pipeline.fit(X_train[best_features], y_train)
+
 # %%
 from sklearn import metrics
 
@@ -102,7 +116,9 @@ auc_train = metrics.roc_auc_score(y_train, y_train_proba)
 
 print("Acurácia Treino: ", acc_train)
 print("AUC treino: ",auc_train)
+
 # %%
+
 y_test_predict = model_pipeline.predict(X_test[best_features])
 y_test_proba = model_pipeline.predict_proba(X_test[best_features])[:,1] 
 
@@ -111,5 +127,14 @@ auc_test = metrics.roc_auc_score(y_test, y_test_proba)
 
 print("Acurácia Test: ", acc_test)
 print("AUC test", auc_test)
+
+# %%
+
+model_df = pd.Series({
+    'model':model_pipeline,
+    'features': best_features,
+
+})
+model_df.to_pickel("model.pkl")
 # %%
 
