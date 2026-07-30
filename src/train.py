@@ -135,6 +135,6 @@ model_df = pd.Series({
     'features': best_features,
 
 })
-model_df.to_pickel("model.pkl")
+model_df.to_pickle("model.pkl")
 # %%
 
