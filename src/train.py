@@ -3,16 +3,20 @@
 import numpy as np 
 import pandas as pd 
 #%%
+
 df_data = pd.read_csv(r"..\data\raw\telco_info.csv")
+
 df_data.head()
+
 #%%
+
 df_data.info()
+
 #%%
 #Preparando os dados
 df = df_data.copy()
-#df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+
 df = df.dropna(subset=['TotalCharges'])
-#df['Ticket_Medio_Historico'] = df.apply(lambda x: x['TotalCharges']/x['tenure'] if x['tenure'] > 0 else x['MonthlyCharges'], axis=1 )
 
 genero = {'Female':1, 'Male':0}
 binario = {'Yes':1, 'No':0}
@@ -39,6 +43,17 @@ for col in cols_texto:
 
 
 df_final.head()
+
+#removendo ultimas 10 linhas pra testar as previsoes depois
+ultimas_linhas_pred = df_final.tail(10).drop(columns='Churn').copy()
+ultimas_linhas_pred.to_csv('ultimas_10_linhas.csv', index=False)
+
+df_final = df_final.iloc[:-10]
+
+# Verifica o novo tamanho do df_data e do arquivo de teste
+print(f"Total original: {len(df_final) + 10} linhas")
+print(f"Linhas para treino: {df_final.shape[0]}")
+print(f"Linhas para previsão: {ultimas_linhas_pred.shape[0]}")
 
 #%%
 
@@ -103,38 +118,55 @@ grid = model_selection.GridSearchCV(model, params, cv=3, scoring="roc_auc")
 #conforme eu for adicionando coisa pra fazer, adicionar mais steps discretization, onehot, etc
 model_pipeline = pipeline.Pipeline(steps = [('Grid', grid)])
 #grid.fit(X_train[best_features], y_train)
-model_pipeline.fit(X_train[best_features], y_train)
+#%%
+import mlflow
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
+mlflow.set_experiment(experiment_name='churn-predict-exp')
+with mlflow.start_run():
+    mlflow.sklearn.autolog()
+    model_pipeline.fit(X_train[best_features], y_train)
 
+    # %%
+    from sklearn import metrics
+
+    y_train_predict = model_pipeline.predict(X_train[best_features])
+    y_train_proba = model_pipeline.predict_proba(X_train[best_features])[:,1] 
+
+    acc_train = metrics.accuracy_score(y_train, y_train_predict)
+    auc_train = metrics.roc_auc_score(y_train, y_train_proba)
+
+    print("Acurácia Treino: ", acc_train)
+    print("AUC treino: ",auc_train)
+
+    # %%
+
+    y_test_predict = model_pipeline.predict(X_test[best_features])
+    y_test_proba = model_pipeline.predict_proba(X_test[best_features])[:,1] 
+
+    acc_test = metrics.accuracy_score(y_test, y_test_predict)
+    auc_test = metrics.roc_auc_score(y_test, y_test_proba)
+
+    print("Acurácia Test: ", acc_test)
+    print("AUC test", auc_test)
+
+    # %%
+
+    model_df = pd.Series({
+        'model':model_pipeline,
+        'features': best_features,
+
+    })
+
+    model_df.to_pickle("model.pkl")
 # %%
-from sklearn import metrics
 
-y_train_predict = model_pipeline.predict(X_train[best_features])
-y_train_proba = model_pipeline.predict_proba(X_train[best_features])[:,1] 
+from mlflow import MlflowClient
 
-acc_train = metrics.accuracy_score(y_train, y_train_predict)
-auc_train = metrics.roc_auc_score(y_train, y_train_proba)
+client = MlflowClient()
 
-print("Acurácia Treino: ", acc_train)
-print("AUC treino: ",auc_train)
+for exp in client.search_experiments():
+    print(exp.experiment_id, exp.name)
 
+    runs = client.search_runs([exp.experiment_id])
+    print(f"Runs: {len(runs)}")
 # %%
-
-y_test_predict = model_pipeline.predict(X_test[best_features])
-y_test_proba = model_pipeline.predict_proba(X_test[best_features])[:,1] 
-
-acc_test = metrics.accuracy_score(y_test, y_test_predict)
-auc_test = metrics.roc_auc_score(y_test, y_test_proba)
-
-print("Acurácia Test: ", acc_test)
-print("AUC test", auc_test)
-
-# %%
-
-model_df = pd.Series({
-    'model':model_pipeline,
-    'features': best_features,
-
-})
-model_df.to_pickle("model.pkl")
-# %%
-

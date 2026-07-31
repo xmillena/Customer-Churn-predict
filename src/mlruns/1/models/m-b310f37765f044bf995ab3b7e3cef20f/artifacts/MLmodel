@@ -1,0 +1,42 @@
+artifact_path: file:///c:/Users/mifer/Desktop/churn-project/Customer-Churn-com-Impacto-de-Negocio/src/mlruns/1/models/m-b310f37765f044bf995ab3b7e3cef20f/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.0
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.9.0
+    skops_trusted_types: null
+is_signature_from_type_hint: false
+mlflow_version: 3.14.0
+model_id: m-b310f37765f044bf995ab3b7e3cef20f
+model_size_bytes: 21856740
+model_uuid: m-b310f37765f044bf995ab3b7e3cef20f
+prompts: null
+run_id: 92173eef69b444fb8fe994a91f89f525
+signature:
+  inputs: '[{"type": "double", "name": "MonthlyCharges", "required": true}, {"type":
+    "long", "name": "tenure", "required": true}, {"type": "long", "name": "InternetService_Fiber
+    optic", "required": true}, {"type": "long", "name": "Dependents", "required":
+    true}, {"type": "long", "name": "gender", "required": true}, {"type": "long",
+    "name": "Partner", "required": true}, {"type": "long", "name": "PaperlessBilling",
+    "required": true}, {"type": "long", "name": "PaymentMethod_Electronic check",
+    "required": true}, {"type": "long", "name": "OnlineBackup", "required": true},
+    {"type": "long", "name": "OnlineSecurity", "required": true}, {"type": "long",
+    "name": "TechSupport", "required": true}, {"type": "long", "name": "SeniorCitizen",
+    "required": true}, {"type": "long", "name": "PaymentMethod_Credit card (automatic)",
+    "required": true}, {"type": "long", "name": "MultipleLines", "required": true},
+    {"type": "long", "name": "Contract_One year", "required": true}, {"type": "long",
+    "name": "StreamingMovies", "required": true}, {"type": "long", "name": "DeviceProtection",
+    "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-07-31 01:43:40.271276'

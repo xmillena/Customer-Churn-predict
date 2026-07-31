@@ -1,0 +1,11 @@
+customerID,gender,SeniorCitizen,Partner,Dependents,tenure,PhoneService,MultipleLines,OnlineSecurity,OnlineBackup,DeviceProtection,TechSupport,StreamingTV,StreamingMovies,PaperlessBilling,MonthlyCharges,TotalCharges,InternetService_Fiber optic,InternetService_No,Contract_One year,Contract_Two year,PaymentMethod_Credit card (automatic),PaymentMethod_Electronic check,PaymentMethod_Mailed check
+9767-FFLEM,0,0,0,0,38,1,0,0,0,0,0,0,0,1,69.5,2625.25,1,0,0,0,1,0,0
+0639-TSIQW,1,0,0,0,67,1,1,1,1,1,0,1,0,1,102.95,6886.25,1,0,0,0,1,0,0
+8456-QDAVC,0,0,0,0,19,1,0,0,0,0,0,1,0,1,78.7,1495.1,1,0,0,0,0,0,0
+7750-EYXWZ,1,0,0,0,12,0,0,0,1,1,1,1,1,0,60.65,743.3,0,0,1,0,0,1,0
+2569-WGERO,1,0,0,0,72,1,0,0,0,0,0,0,0,1,21.15,1419.4,0,1,0,1,0,0,0
+6840-RESVB,0,0,1,1,24,1,1,1,0,1,1,1,1,1,84.8,1990.5,0,0,1,0,0,0,1
+2234-XADUH,1,0,1,1,72,1,1,0,1,1,0,1,1,1,103.2,7362.9,1,0,1,0,1,0,0
+4801-JZAZL,1,0,1,1,11,0,0,1,0,0,0,0,0,1,29.6,346.45,0,0,0,0,0,1,0
+8361-LTMKD,0,1,1,0,4,1,1,0,0,0,0,0,0,1,74.4,306.6,1,0,0,0,0,0,1
+3186-AJIEK,0,0,0,0,66,1,0,1,0,1,1,1,1,1,105.65,6844.5,1,0,0,1,0,0,0
