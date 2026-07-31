@@ -2,6 +2,10 @@
 #%%
 import numpy as np 
 import pandas as pd 
+from sklearn import metrics
+import mlflow
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
+mlflow.set_experiment(experiment_name='churn-predict-exp')
 #%%
 
 df_data = pd.read_csv(r"..\data\raw\telco_info.csv")
@@ -89,6 +93,7 @@ arvore = tree.DecisionTreeClassifier(random_state=42)
 arvore.fit(X_train, y_train)
 
 arvore.feature_importances_
+
 # %%
 feature_importance = pd.Series(arvore.feature_importances_, index=X_train.columns).sort_values(ascending=False).reset_index()
 feature_importance['acumulada'] = feature_importance[0].cumsum()
@@ -100,34 +105,34 @@ best_features
 X_train.isnull().sum()
 #%%
 
-
-"Modelo Regressao linear"
+"Modelos"
 #testar outros modelos
 from sklearn import linear_model, ensemble
 
-#model = linear_model.LogisticRegression(penalty=None, random_state=42, max_iter=1000)
-model = ensemble.RandomForestClassifier(random_state=42, n_jobs=2)
+#model = linear_model.LogisticRegression(random_state=42, max_iter=1000)
+model = ensemble.RandomForestClassifier(random_state=42, n_jobs=-1)
 params = {
     "min_samples_leaf":[15,20,25,30,50],
     "n_estimators": [100,200,300,1000],
     "criterion": ['gini', 'entropy', 'log_loss']   
 
 }
+"""params = {
+   "C": [0.001, 0.01, 0.1, 1, 10],
+    "penalty": ["l1", "l2"],
+    "solver": ["liblinear", "saga"] 
+
+}#parametros da reg log"""
+
 grid = model_selection.GridSearchCV(model, params, cv=3, scoring="roc_auc")
 
 #conforme eu for adicionando coisa pra fazer, adicionar mais steps discretization, onehot, etc
 model_pipeline = pipeline.Pipeline(steps = [('Grid', grid)])
-#grid.fit(X_train[best_features], y_train)
+
 #%%
-import mlflow
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
-mlflow.set_experiment(experiment_name='churn-predict-exp')
-with mlflow.start_run():
+with mlflow.start_run(run_name = model.__str__()):
     mlflow.sklearn.autolog()
     model_pipeline.fit(X_train[best_features], y_train)
-
-    # %%
-    from sklearn import metrics
 
     y_train_predict = model_pipeline.predict(X_train[best_features])
     y_train_proba = model_pipeline.predict_proba(X_train[best_features])[:,1] 
@@ -138,7 +143,6 @@ with mlflow.start_run():
     print("Acurácia Treino: ", acc_train)
     print("AUC treino: ",auc_train)
 
-    # %%
 
     y_test_predict = model_pipeline.predict(X_test[best_features])
     y_test_proba = model_pipeline.predict_proba(X_test[best_features])[:,1] 
@@ -146,27 +150,24 @@ with mlflow.start_run():
     acc_test = metrics.accuracy_score(y_test, y_test_predict)
     auc_test = metrics.roc_auc_score(y_test, y_test_proba)
 
+    mlflow.log_metrics({
+        "accuracy_train": acc_train,
+        "auc_train": auc_train,
+        "accuracy_test": acc_test,
+        "auc_test": auc_test
+    })
+
     print("Acurácia Test: ", acc_test)
     print("AUC test", auc_test)
-
-    # %%
-
     model_df = pd.Series({
         'model':model_pipeline,
         'features': best_features,
 
-    })
+        })
 
     model_df.to_pickle("model.pkl")
+
 # %%
 
-from mlflow import MlflowClient
 
-client = MlflowClient()
-
-for exp in client.search_experiments():
-    print(exp.experiment_id, exp.name)
-
-    runs = client.search_runs([exp.experiment_id])
-    print(f"Runs: {len(runs)}")
 # %%

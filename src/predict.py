@@ -1,18 +1,30 @@
 #%%
 
 import pandas as pd
+import mlflow
+from mlflow.tracking import MlflowClient
 
-model_df = pd.read_pickle("model.pkl")
-model = model_df['model']
-features = model_df['features']
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
+client = MlflowClient()
+
+latest_version = max(
+    [
+        int(mv.version)
+        for mv in client.search_model_versions("name='model-churn'")
+    ]
+)
+
+#importar modelo
+model_uri = f"models:/model-churn/{latest_version}"
+model = mlflow.sklearn.load_model(model_uri)
 
 #%%
-"""amostra = pd.read_csv("../data/ultimas_10_linhas.csv")
-
-# %%
+features = model.feature_names_in_
+features
+#%%
+amostra = pd.read_csv("../data/ultimas_10_linhas.csv")
 predicao = model.predict_proba(amostra[features])[:,1]
-#%%
-
 amostra['proba'] = predicao
-print(amostra[['proba'] + list(features)])"""
+amostra[['proba']]
+# %%
 # %%

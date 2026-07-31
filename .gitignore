@@ -10,3 +10,13 @@ __pycache__/
 
 # VS Code
 .vscode/
+
+# Ignorar arquivos de banco de dados e artefatos do MLflow
+mlartifacts/
+mlruns/
+src/mlruns/
+*.db
+mlflow.db
+
+# Ignorar modelos locais exportados
+*.pkl
