@@ -73,25 +73,8 @@ A partir dessas variáveis, a interpretação de negócio deve ser feita como **
 | **`MultipleLines`**** e ****`StreamingMovies`**                                                  | Esses atributos representam características do pacote e do consumo do cliente e foram considerados relevantes pelo processo de seleção.                                                                            | **Personalização de Oferta:** avaliar se mudanças no pacote, benefícios de uso ou ofertas complementares reduzem o risco dos segmentos identificados.                                                  |
 | **`PaperlessBilling`**                                                                           | A modalidade de faturamento digital foi selecionada como atributo preditivo, contribuindo para diferenciar os perfis avaliados pelo modelo.                                                                        | **Jornada de Cobrança:** investigar a relação entre experiência de faturamento, pagamento e retenção antes de definir uma intervenção específica.                                                      |
 
-### Como interpretar esses resultados
 
-A seleção das **17 features** não significa que cada variável seja uma causa do churn. O resultado indica que esses atributos apresentaram contribuição suficiente para permanecer no conjunto utilizado pelo modelo.
-
-Portanto, a interpretação correta dos resultados segue o seguinte fluxo:
-
-```text
-Feature selecionada
-        ↓
-Sinal preditivo
-        ↓
-Hipótese de negócio
-        ↓
-Intervenção
-        ↓
-Experimento
-        ↓
-Impacto mensurado
-```
+A seleção das **17 features**  indica que esses atributos apresentaram contribuição suficiente para permanecer no conjunto utilizado pelo modelo.
 
 O modelo deve ser utilizado como uma **ferramenta de priorização de risco**, e não como uma explicação causal do comportamento do cliente.
 
