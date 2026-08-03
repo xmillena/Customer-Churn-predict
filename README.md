@@ -28,7 +28,6 @@ Este trabalho foi realizado seguindo o framework SEMMA, que consiste nos seguint
 5. Asses
     *  Avaliação da acurácia e usabilidade do modelo.
 ---
-## Matriz de Impacto: Do Aprendizado da Máquina à Ação de Negócios
 
 ## Matriz de Impacto: Das Variáveis Selecionadas à Ação de Negócio
 
