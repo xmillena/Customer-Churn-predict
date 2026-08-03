@@ -48,16 +48,9 @@ for col in cols_texto:
 
 df_final.head()
 
-#removendo ultimas 10 linhas pra testar as previsoes depois
-ultimas_linhas_pred = df_final.tail(10).drop(columns='Churn').copy()
-ultimas_linhas_pred.to_csv('ultimas_10_linhas.csv', index=False)
-
+#removendo ultimas 10 linas para simular a previsao de churn novos clientes
 df_final = df_final.iloc[:-10]
-
-# Verifica o novo tamanho do df_data e do arquivo de teste
-print(f"Total original: {len(df_final) + 10} linhas")
-print(f"Linhas para treino: {df_final.shape[0]}")
-print(f"Linhas para previsão: {ultimas_linhas_pred.shape[0]}")
+df_final.to_csv('telco_analysis.csv', index=False)
 
 #%%
 
