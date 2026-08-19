@@ -1,7 +1,7 @@
 # Telco Customer Churn
 
 ## Sumário Executivo ("So What?")
-
+![alt text](image.png)
 A predição de cancelamento não deve se limitar a calcular uma probabilidade no banco de dados; ela precisa apontar **qual alavanca acionar** para proteger o faturamento da empresa.
 
 Este projeto implementa um **pipeline preditivo de Machine Learning**. O modelo analisa o comportamento contratual, financeiro e de consumo de cada cliente para identificar precocemente o risco de Churn. 
