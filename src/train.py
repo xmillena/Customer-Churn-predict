@@ -166,8 +166,3 @@ with mlflow.start_run(run_name = model.__str__()):
         })
 
     model_df.to_pickle("model.pkl")
-
-# %%
-
-
-# %%
