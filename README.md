@@ -39,10 +39,10 @@ Aproximadamente **1 em cada 4 clientes** da base já cancelou o serviço.
 ### Achados por dimensão
 
 **Tipo de contrato.** Clientes com contrato mensal (*month-to-month*) apresentam churn significativamente mais alto que clientes com contrato anual ou bianual. 
-![alt text](img\churn_contrato.png)
+![alt text](img/churn_contrato.png)
 
 **Perfil demográfico.** O cliente com maior propensão ao churn é, tipicamente, idoso, sem parceiro(a) e sem dependentes — perfil com menor vínculo familiar no plano e, presumivelmente, menor custo de troca de fornecedor.
-![alt text](img\churn_demo.png)
+![alt text](img/churn_demo.png)
 
 **Cobrança mensal (`MonthlyCharges`).** Clientes que cancelam apresentam cobranças mensais mais altas e menos dispersas; clientes que permanecem têm valores mais variados, porém concentrados em faixas mais baixas. 
 
