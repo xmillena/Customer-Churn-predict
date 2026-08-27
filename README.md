@@ -16,7 +16,7 @@
 
 ---
 
-## Sumário Executivo
+## Resumo Executivo
 
 Este projeto implementa um **pipeline preditivo de Machine Learning**. O modelo analisa o comportamento contratual, financeiro e de consumo de cada cliente para identificar a probabilidade de cancelamento do serviço.
 
