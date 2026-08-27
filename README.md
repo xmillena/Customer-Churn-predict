@@ -50,11 +50,11 @@ Aproximadamente **1 em cada 4 clientes** da base já cancelou o serviço.
 
 **Valor total gasto (`TotalCharges`).** Clientes que cancelam gastaram, em geral, menos no acumulado — resultado provavelmente correlacionado a `tenure`, e por isso interpretado em conjunto com o tempo de permanência, e não isoladamente.
 
-![alt text](img\churn_gasto.png)
+![alt text](img/churn_gasto.png)
 
 **Serviços contratados.** Maior incidência de churn entre clientes com internet via fibra óptica e sem serviços de proteção (`OnlineSecurity`, `OnlineBackup`, `DeviceProtection`, `TechSupport`). Já os serviços de streaming (`StreamingTV`, `StreamingMovies`) não mostraram associação relevante — proporção de churn semelhante entre quem tem e quem não tem.
 
-![alt text](img\churn_services.png)
+![alt text](img/churn_services.png)
 
 ### Conexão com a etapa de Modelagem
 
