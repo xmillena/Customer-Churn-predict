@@ -1,3 +1,9 @@
-mlflow
-pandas
-scikit-learn
+matplotlib==3.11.1
+mlflow==3.15.0
+numpy==2.5.1
+packaging==26.2
+pandas==2.3.3
+python == 3.13.5
+scikit-learn==1.9.0
+scipy==1.18.0
+seaborn==0.13.2

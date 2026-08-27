@@ -27,4 +27,16 @@ predicao = model.predict_proba(amostra[features])[:,1]
 amostra['proba'] = predicao
 amostra[['proba']]
 # %%
+
+def categorizar_acao(row):
+    if row['proba'] >= 0.70:
+        return 'Risco alto'
+    elif row['proba'] >= 0.40:
+        return 'Risco médio'
+    else:
+        return 'Risco baixo'
+
+# %%
+amostra['nivel_risco'] = amostra.apply(categorizar_acao, axis=1)
+amostra[['proba', 'nivel_risco']]
 # %%
