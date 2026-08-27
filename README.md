@@ -1,19 +1,38 @@
+
 # Telco Customer Churn
 
-## Sumário Executivo 
+## Sumário
+
+- [Sumário Executivo](#sumário-executivo)
+- [Fluxo do trabalho](#fluxo-do-trabalho)
+- [Explore: Análise Exploratória dos Dados (EDA)](#explore-análise-exploratória-dos-dados-eda)
+  - [Distribuição da variável-alvo](#distribuição-da-variável-alvo)
+  - [Achados por dimensão](#achados-por-dimensão)
+  - [Conexão com a etapa de Modelagem](#conexão-com-a-etapa-de-modelagem)
+- [Matriz de Impacto: Das Variáveis Selecionadas à Ação de Negócio](#matriz-de-impacto-das-variáveis-selecionadas-à-ação-de-negócio)
+- [Metodologia & Engenharia do Pipeline](#metodologia--engenharia-do-pipeline)
+- [Resultados do Modelo e Métricas Executivas](#resultados-do-modelo-e-métricas-executivas)
+- [Arquitetura e Organização do Repositório](#arquitetura-e-organização-do-repositório)
+
+---
+
+## Sumário Executivo
 
 Este projeto implementa um **pipeline preditivo de Machine Learning**. O modelo analisa o comportamento contratual, financeiro e de consumo de cada cliente para identificar a probabilidade de cancelamento do serviço.
 
 A partir da nossa arquitetura de engenharia de features e da importância matemática dos atributos aprendida pelo classificador (`feature_importances_`).
 
 ---
+
 ## Fluxo do trabalho
 
 Este trabalho foi realizado seguindo os seguintes passos:
-    *  Visualização e descrição básica do dado;
-    *  Seleção e transformação das variáveis;
-    *  Uso de modelos preditivos;
-    *  Avaliação da acurácia e usabilidade do modelo.
+
+* Visualização e descrição básica do dado;
+* Seleção e transformação das variáveis;
+* Uso de modelos preditivos;
+* Avaliação da acurácia e usabilidade do modelo.
+
 ---
 
 ## Explore: Análise Exploratória dos Dados (EDA)
@@ -38,13 +57,13 @@ Aproximadamente **1 em cada 4 clientes** da base já cancelou o serviço.
 
 ### Achados por dimensão
 
-**Tipo de contrato.** Clientes com contrato mensal (*month-to-month*) apresentam churn significativamente mais alto que clientes com contrato anual ou bianual. 
+**Tipo de contrato.** Clientes com contrato mensal (*month-to-month*) apresentam churn significativamente mais alto que clientes com contrato anual ou bianual.
 ![alt text](img/churn_contrato.png)
 
 **Perfil demográfico.** O cliente com maior propensão ao churn é, tipicamente, idoso, sem parceiro(a) e sem dependentes — perfil com menor vínculo familiar no plano e, presumivelmente, menor custo de troca de fornecedor.
 ![alt text](img/churn_demo.png)
 
-**Cobrança mensal (`MonthlyCharges`).** Clientes que cancelam apresentam cobranças mensais mais altas e menos dispersas; clientes que permanecem têm valores mais variados, porém concentrados em faixas mais baixas. 
+**Cobrança mensal (`MonthlyCharges`).** Clientes que cancelam apresentam cobranças mensais mais altas e menos dispersas; clientes que permanecem têm valores mais variados, porém concentrados em faixas mais baixas.
 
 **Tempo de permanência (`tenure`).** Clientes que cancelam tendem a ter menos tempo de casa, embora existam clientes antigos que também cancelam — tempo de permanência reduz, mas não elimina, o risco.
 
@@ -90,21 +109,21 @@ DeviceProtection
 
 A partir dessas variáveis, a interpretação de negócio deve ser feita como **sinais de risco e hipóteses de intervenção**, e não como evidência de causalidade. O modelo identifica padrões associados à probabilidade de churn; cabe às áreas de Customer Success e Marketing transformar esses sinais em ações e posteriormente validar seu impacto.
 
-| Variável Preditiva Selecionada                                                                   | Interpretação de Negócio ("So What?")                                                                                                                                                                              | Plano de Ação Recomendado (CS / Marketing)                                                                                                                                                             |
-| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **`tenure`** *(Tempo de casa)*                                                                   | O tempo de relacionamento é um dos atributos considerados pelo modelo para diferenciar perfis de risco. Clientes em diferentes estágios da jornada podem apresentar comportamentos distintos de permanência.       | **Onboarding Proativo:** criar réguas de engajamento e check-ins de Customer Success para clientes em início de relacionamento, aumentando a percepção de valor nos primeiros meses.                   |
-| **`Contract_One year`**                                                                          | A variável representa clientes com contrato de um ano em relação à categoria de referência do encoding. A estrutura contratual contribui para diferenciar diferentes perfis de risco.                              | **Campanha de Migração:** testar incentivos para clientes de contratos mensais migrarem para planos de maior duração, avaliando retenção e impacto financeiro.                                         |
-| **`InternetService_Fiber optic`**                                                                | A utilização de fibra óptica aparece entre os atributos selecionados pelo modelo, indicando que o tipo de serviço contém informação relevante para diferenciar perfis de clientes.                                 | **Monitoramento de Experiência:** investigar satisfação, chamados técnicos e percepção de valor de clientes de fibra antes de definir ações específicas de retenção.                                   |
-| **`TechSupport`**                                                                                | A disponibilidade de suporte técnico está entre as variáveis selecionadas, indicando que esse atributo contém informação útil para a classificação de risco.                                                       | **Suporte Proativo:** para clientes identificados como alto risco, testar onboarding técnico, contato preventivo ou benefícios relacionados ao suporte.                                                |
-| **`MonthlyCharges`**                                                                             | O valor da cobrança mensal é um dos atributos selecionados e pode representar diferenças de perfil e exposição financeira entre os clientes.                                                                       | **Retenção por Valor:** para clientes de alto risco, avaliar alternativas de plano, benefícios ou condições comerciais antes de oferecer descontos indiscriminadamente.                                |
-| **`PaymentMethod_Electronic check`**                                                             | O método de pagamento eletrônico está entre as variáveis selecionadas, indicando que a forma de cobrança ajuda a diferenciar os perfis de churn.                                                                   | **Automação de Pagamento:** testar campanhas de migração para métodos de pagamento automáticos, medindo impacto sobre churn e inadimplência.                                                           |
-| **`PaymentMethod_Credit card (automatic)`**                                                      | O pagamento automático por cartão também foi selecionado pelo modelo, permitindo diferenciar comportamentos associados aos métodos de cobrança.                                                                    | **Incentivo à Recorrência:** estimular formas de pagamento automático quando houver benefício econômico e operacional comprovado.                                                                      |
-| **`Contract_One year`**** + ****`MonthlyCharges`**** + ****`tenure`**                            | A combinação de características contratuais, financeiras e de relacionamento permite ao modelo construir um perfil individual de risco mais completo.                                                              | **Segmentação por Risco:** combinar o score de churn com características do cliente para definir campanhas específicas, em vez de aplicar uma única estratégia para toda a carteira.                   |
-| **`OnlineSecurity`****, ****`OnlineBackup`****, ****`DeviceProtection`**** e ****`TechSupport`** | O conjunto de serviços adicionais selecionados indica que a composição do pacote contratado contém informação relevante para diferenciar perfis de clientes.                                                       | **Revisão do Bundle:** testar ofertas de serviços adicionais ou suporte para segmentos de alto risco, priorizando intervenções com potencial de aumentar o valor percebido.                            |
-| **`Dependents`****, ****`Partner`**** e ****`SeniorCitizen`**                                    | Essas variáveis representam características demográficas e familiares utilizadas pelo modelo para diferenciar perfis de risco.                                                                                     | **Segmentação de Comunicação:** utilizar essas informações para personalizar comunicação e ofertas, respeitando políticas de privacidade e sem interpretar essas características como causas do churn. |
-| **`gender`**                                                                                     | A variável foi selecionada pelo processo de modelagem, indicando que contém informação preditiva no conjunto analisado. Entretanto, sua utilização exige cuidado para evitar decisões comerciais discriminatórias. | **Governança:** utilizar a variável para avaliação estatística e auditoria do modelo, evitando transformá-la diretamente em critério de priorização comercial sem análise de fairness.                 |
-| **`MultipleLines`**** e ****`StreamingMovies`**                                                  | Esses atributos representam características do pacote e do consumo do cliente e foram considerados relevantes pelo processo de seleção.                                                                            | **Personalização de Oferta:** avaliar se mudanças no pacote, benefícios de uso ou ofertas complementares reduzem o risco dos segmentos identificados.                                                  |
-| **`PaperlessBilling`**                                                                           | A modalidade de faturamento digital foi selecionada como atributo preditivo, contribuindo para diferenciar os perfis avaliados pelo modelo.                                                                        | **Jornada de Cobrança:** investigar a relação entre experiência de faturamento, pagamento e retenção antes de definir uma intervenção específica.                                                      |
+| Variável Preditiva Selecionada | Interpretação de Negócio ("So What?") | Plano de Ação Recomendado (CS / Marketing) |
+| --- | --- | --- |
+| **`tenure`** *(Tempo de casa)* | O tempo de relacionamento é um dos atributos considerados pelo modelo para diferenciar perfis de risco. Clientes em diferentes estágios da jornada podem apresentar comportamentos distintos de permanência. | **Onboarding Proativo:** criar réguas de engajamento e check-ins de Customer Success para clientes em início de relacionamento, aumentando a percepção de valor nos primeiros meses. |
+| **`Contract_One year`** | A variável representa clientes com contrato de um ano em relação à categoria de referência do encoding. A estrutura contratual contribui para diferenciar diferentes perfis de risco. | **Campanha de Migração:** testar incentivos para clientes de contratos mensais migrarem para planos de maior duração, avaliando retenção e impacto financeiro. |
+| **`InternetService_Fiber optic`** | A utilização de fibra óptica aparece entre os atributos selecionados pelo modelo, indicando que o tipo de serviço contém informação relevante para diferenciar perfis de clientes. | **Monitoramento de Experiência:** investigar satisfação, chamados técnicos e percepção de valor de clientes de fibra antes de definir ações específicas de retenção. |
+| **`TechSupport`** | A disponibilidade de suporte técnico está entre as variáveis selecionadas, indicando que esse atributo contém informação útil para a classificação de risco. | **Suporte Proativo:** para clientes identificados como alto risco, testar onboarding técnico, contato preventivo ou benefícios relacionados ao suporte. |
+| **`MonthlyCharges`** | O valor da cobrança mensal é um dos atributos selecionados e pode representar diferenças de perfil e exposição financeira entre os clientes. | **Retenção por Valor:** para clientes de alto risco, avaliar alternativas de plano, benefícios ou condições comerciais antes de oferecer descontos indiscriminadamente. |
+| **`PaymentMethod_Electronic check`** | O método de pagamento eletrônico está entre as variáveis selecionadas, indicando que a forma de cobrança ajuda a diferenciar os perfis de churn. | **Automação de Pagamento:** testar campanhas de migração para métodos de pagamento automáticos, medindo impacto sobre churn e inadimplência. |
+| **`PaymentMethod_Credit card (automatic)`** | O pagamento automático por cartão também foi selecionado pelo modelo, permitindo diferenciar comportamentos associados aos métodos de cobrança. | **Incentivo à Recorrência:** estimular formas de pagamento automático quando houver benefício econômico e operacional comprovado. |
+| **`Contract_One year`** + **`MonthlyCharges`** + **`tenure`** | A combinação de características contratuais, financeiras e de relacionamento permite ao modelo construir um perfil individual de risco mais completo. | **Segmentação por Risco:** combinar o score de churn com características do cliente para definir campanhas específicas, em vez de aplicar uma única estratégia para toda a carteira. |
+| **`OnlineSecurity`**, **`OnlineBackup`**, **`DeviceProtection`** e **`TechSupport`** | O conjunto de serviços adicionais selecionados indica que a composição do pacote contratado contém informação relevante para diferenciar perfis de clientes. | **Revisão do Bundle:** testar ofertas de serviços adicionais ou suporte para segmentos de alto risco, priorizando intervenções com potencial de aumentar o valor percebido. |
+| **`Dependents`**, **`Partner`** e **`SeniorCitizen`** | Essas variáveis representam características demográficas e familiares utilizadas pelo modelo para diferenciar perfis de risco. | **Segmentação de Comunicação:** utilizar essas informações para personalizar comunicação e ofertas, respeitando políticas de privacidade e sem interpretar essas características como causas do churn. |
+| **`gender`** | A variável foi selecionada pelo processo de modelagem, indicando que contém informação preditiva no conjunto analisado. Entretanto, sua utilização exige cuidado para evitar decisões comerciais discriminatórias. | **Governança:** utilizar a variável para avaliação estatística e auditoria do modelo, evitando transformá-la diretamente em critério de priorização comercial sem análise de fairness. |
+| **`MultipleLines`** e **`StreamingMovies`** | Esses atributos representam características do pacote e do consumo do cliente e foram considerados relevantes pelo processo de seleção. | **Personalização de Oferta:** avaliar se mudanças no pacote, benefícios de uso ou ofertas complementares reduzem o risco dos segmentos identificados. |
+| **`PaperlessBilling`** | A modalidade de faturamento digital foi selecionada como atributo preditivo, contribuindo para diferenciar os perfis avaliados pelo modelo. | **Jornada de Cobrança:** investigar a relação entre experiência de faturamento, pagamento e retenção antes de definir uma intervenção específica. |
 
 A seleção das **17 features** indica que esses atributos apresentaram contribuição suficiente para permanecer no conjunto utilizado pelo modelo.
 
@@ -149,6 +168,8 @@ Os modelos de **Regressão Logística** e **Random Forest** foram testados e ava
 | **Teste** | *0.7981* | *0.8398* |
 
 *Nota: O modelo apresenta boa generalização, com métricas de treino e teste próximas, o que sugere ausência de overfitting relevante, resultado do rigor no isolamento dos dados e na seleção de features.*
+
+---
 
 ## Arquitetura e Organização do Repositório
 
